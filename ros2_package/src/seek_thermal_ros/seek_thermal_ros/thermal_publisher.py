@@ -63,11 +63,11 @@ class ThermalImagePublisher(Node):
     def timer_callback(self):
         img = self.frame
         if img.is_empty == False:
-            img = imutils.rotate(img, self.rotationValue_input)
-            self.publisher_.publish(self.br.cv2_to_imgmsg(img.data))
+            img_pub = imutils.rotate(img.data, self.rotationValue_input)
+            self.publisher_.publish(self.br.cv2_to_imgmsg(img_pub, "mono8"))
 
     def on_frame(self, _camera, camera_frame, _):
-        self.frame = camera_frame.color_argb8888
+        self.frame = camera_frame.grayscale
 
     def on_event(self, camera, event_type, event_status, _):
 
@@ -85,7 +85,7 @@ class ThermalImagePublisher(Node):
             camera.color_palette = SeekCameraColorPalette[self.colorPalette_input]
 
             camera.register_frame_available_callback(self.on_frame, self)
-            camera.capture_session_start(SeekCameraFrameFormat.COLOR_ARGB8888)
+            camera.capture_session_start(SeekCameraFrameFormat.GRAYSCALE)
 
         elif event_type == SeekCameraManagerEvent.DISCONNECT:
             if self.camera == camera:
