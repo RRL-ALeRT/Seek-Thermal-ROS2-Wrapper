@@ -18,7 +18,7 @@ def generate_launch_description():
             ],
             remappings=[
                 ('in', '/thermalImage'),
-                ('out','/thermalImage/compressed')
+                ('out/compressed','/thermalImage/compressed')
             ]
         ),           
     ])
