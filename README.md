@@ -25,7 +25,7 @@ Change colorPalette using args: **colorPalette:=value ** replace value with opti
         - HI
         - GREEN
 
-Change rotationValue using args: **--ros-args -p rotationValue:=value ** replace value with options mentioned below!
+Change rotationValue using args: **rotationValue:=value ** replace value with options mentioned below!
 
     Available options:
         - 0
