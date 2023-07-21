@@ -1,7 +1,7 @@
 import launch
-from launch import LaunchDescription, SomeSubstitutionsType
-from launch.substitutions import LaunchConfiguration
+from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 from ament_index_python.packages import get_packages_with_prefixes
 
 
@@ -9,9 +9,7 @@ def generate_launch_description():
     colorPalette = LaunchConfiguration("colorPalette", default="TYRIAN")
     rotationValue = LaunchConfiguration("rotationValue", default=270)
     greyscale = LaunchConfiguration("greyscale", default=False)
-
-    launch_description_nodes = []
-
+    
     seek_node = Node(
         package="seek_thermal_ros",
         executable="thermal_publisher",
@@ -21,9 +19,9 @@ def generate_launch_description():
             {"rotationValue": rotationValue},
             {"greyscale": greyscale},
         ],
+        respawn=True,  # Automatically respawn the node if it exits
     )
-    launch_description_nodes.append(seek_node)
-
+    
     compressed_seek_node = Node(
         package="image_transport",
         executable="republish",
@@ -37,7 +35,6 @@ def generate_launch_description():
             ("out/compressed","/thermalImage/compressed")
         ]
     )
-    launch_description_nodes.append(compressed_seek_node)
 
     # Check if ffmpeg plugin is installed
     if "ffmpeg_image_transport" in get_packages_with_prefixes():
@@ -54,17 +51,11 @@ def generate_launch_description():
                 ("out/ffmpeg","/thermalImage/ffmpeg")
             ]
         )
-        launch_description_nodes.append(ffmpeg_seek_node)
+    else:
+        ffmpeg_seek_node = None
 
-    # This action will kill all nodes once seek_node has exited
-    the_killer = launch.actions.RegisterEventHandler(
-        event_handler=launch.event_handlers.OnProcessExit(
-            target_action=seek_node,
-            on_exit=[
-                launch.actions.EmitEvent(event=launch.events.Shutdown())
-            ],
-        )
-    )
-    launch_description_nodes.append(the_killer)
-
-    return LaunchDescription(launch_description_nodes)
+    return LaunchDescription([
+        seek_node,
+        compressed_seek_node,
+        ffmpeg_seek_node,
+    ])
