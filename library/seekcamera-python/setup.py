@@ -17,9 +17,9 @@
 
 import setuptools
 
-long_description = ""
-with open("README.md", "r") as f:
-    long_description = f.read()
+# long_description = ""
+# with open("README.md", "r") as f:
+#     long_description = f.read()
 
 setuptools.setup(
     name="seekcamera-python",
@@ -27,8 +27,8 @@ setuptools.setup(
     author="Seek Thermal Incorporated",
     author_email="open-source@thermal.com",
     description="Seek Thermal SDK Python Language Bindings",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
+    # long_description=long_description,
+    # long_description_content_type="text/markdown",
     url="https://github.com/seekthermal/seekcamera-python",
     license="Apache License 2.0",
     license_files=["LICENSE"],
@@ -41,6 +41,7 @@ setuptools.setup(
     python_requires=">=3.0",
     install_requires=[
         "numpy>=1",
+        "imutils",
     ],
     data_files=[
         ("examples", ["examples/seekcamera-opencv.py", "examples/seekcamera-simple.py"])

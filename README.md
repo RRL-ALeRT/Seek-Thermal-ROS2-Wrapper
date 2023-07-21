@@ -1,18 +1,18 @@
 # SeekCamera Wrapper
 
-Install seekthermal-sdk-dev-4.3.1.6_amd64.deb
+Install seekcamera-sdk with
 
-    sudo apt-get install ./seekthermal-sdk-dev-4.3.1.6_amd64.deb
+    sudo dpkg -i library/seekthermal-sdk-dev-4.3.1.6_amd64.deb
 
-Install python wrapper
+Build ROS2 package
 
-    sudo pip3 install -e .
+Launch with
 
-Build ROS package
+    ros2 launch seek_thermal_ros thermal_publisher_launch.py
 
-    ros2 run seek_thermal_ros thermal_publisher
+*Tested on Ubuntu 22.04 with ROS2 Humble
 
-Change colorPalette using args: **--ros-args -p colorPalette:=value ** replace value with options mentioned below!
+Change colorPalette using args: **colorPalette:=value ** replace value with options mentioned below!
 
     Available options:
         - WHITE_HOT
