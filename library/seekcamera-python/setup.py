@@ -41,7 +41,6 @@ setuptools.setup(
     python_requires=">=3.0",
     install_requires=[
         "numpy>=1",
-        "imutils",
     ],
     data_files=[
         ("examples", ["examples/seekcamera-opencv.py", "examples/seekcamera-simple.py"])
