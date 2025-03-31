@@ -15,6 +15,7 @@ from sensor_msgs.msg import Image
 from rcl_interfaces.msg import ParameterDescriptor, ParameterType, IntegerRange
 from cv_bridge import CvBridge
 import cv2
+from time import sleep
 
 
 class ThermalImagePublisher(Node):

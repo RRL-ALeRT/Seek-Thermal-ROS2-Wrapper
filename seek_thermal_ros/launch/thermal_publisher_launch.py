@@ -7,8 +7,10 @@ from ament_index_python.packages import get_packages_with_prefixes
 
 def generate_launch_description():
     colorPalette = LaunchConfiguration("colorPalette", default="TYRIAN")
-    rotationValue = LaunchConfiguration("rotationValue", default=270)
+    rotationValue = LaunchConfiguration("rotationValue", default=0)
     greyscale = LaunchConfiguration("greyscale", default=False)
+    
+    launch_list = []
     
     seek_node = Node(
         package="seek_thermal_ros",
@@ -21,6 +23,7 @@ def generate_launch_description():
         ],
         respawn=True,  # Automatically respawn the node if it exits
     )
+    launch_list.append(seek_node)
     
     compressed_seek_node = Node(
         package="image_transport",
@@ -35,6 +38,7 @@ def generate_launch_description():
             ("out/compressed","/thermalImage/compressed")
         ]
     )
+    launch_list.append(compressed_seek_node)
 
     # Check if ffmpeg plugin is installed
     if "ffmpeg_image_transport" in get_packages_with_prefixes():
@@ -51,11 +55,6 @@ def generate_launch_description():
                 ("out/ffmpeg","/thermalImage/ffmpeg")
             ]
         )
-    else:
-        ffmpeg_seek_node = None
+        launch_list.append(ffmpeg_seek_node)
 
-    return LaunchDescription([
-        seek_node,
-        compressed_seek_node,
-        ffmpeg_seek_node,
-    ])
+    return LaunchDescription(launch_list)
