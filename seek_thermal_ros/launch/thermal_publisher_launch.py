@@ -40,8 +40,23 @@ def generate_launch_description():
     )
     launch_list.append(compressed_seek_node)
 
-    # Check if ffmpeg plugin is installed
-    if "ffmpeg_image_transport" in get_packages_with_prefixes():
+    # Check if abr_ffmpeg/ffmpeg plugin is installed
+    if "abr_ffmpeg_image_transport" in get_packages_with_prefixes():
+        ffmpeg_seek_node = Node(
+            package="image_transport",
+            executable="republish",
+            name="thermal_republish",
+            arguments=[  
+                "raw",
+                "abr_ffmpeg"
+            ],
+            remappings=[
+                ("in", "/thermalImage"),
+                ("out/abr_ffmpeg","/thermalImage/abr_ffmpeg")
+            ]
+        )
+        launch_list.append(ffmpeg_seek_node)
+    elif "ffmpeg_image_transport" in get_packages_with_prefixes():
         ffmpeg_seek_node = Node(
             package="image_transport",
             executable="republish",
